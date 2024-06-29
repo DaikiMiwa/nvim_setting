@@ -13,6 +13,7 @@ return {
 			python = { "pylint" },
 		}
 
+		-- set pylint to work in virtual env
 		local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
 		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
@@ -21,6 +22,9 @@ return {
 				lint.try_lint()
 			end,
 		})
+
+		lint.linters.pylint.cmd = "python"
+		lint.linters.pylint.args = { "-m", "pylint", "-f", "json" }
 
 		vim.keymap.set("n", "<leader>l", function()
 			lint.try_lint()
